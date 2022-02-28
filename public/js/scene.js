@@ -36,30 +36,18 @@ class Scene {
     //THREE WebGL renderer
     this.webGLRenderer = createWebGLRenderer(this.width, this.height);
 
-    // this.webGLRenderer = new THREE.WebGLRenderer({
-    //   antialiasing: true,
-    // });
-    // this.webGLRenderer.setClearColor(new THREE.Color("lightblue"));
-    // this.webGLRenderer.setSize(this.width, this.height);
-
     //PAULINE CSS Renderer:
     this.CSSRenderer = createCSSRenderer(this.width, this.height);
     this.CSSRenderer.setSize(this.width, this.height);
-
     console.log(this.CSSRenderer);
-
 
     //Push the canvas to the DOM
     let domElement = document.getElementById("canvas-container");
     domElement.appendChild(this.webGLRenderer.domElement);
-
-    //PAULINE
-   domElement.appendChild(this.CSSRenderer.domElement);
-
-   // TEST:
-
-
-   create3DPage(
+    domElement.appendChild(this.CSSRenderer.domElement);
+    
+    // DEBUGGING: Test 3D Page
+    create3DPage(
      this.webGLScene, 
      this.cssScene,
      15,
@@ -80,7 +68,6 @@ class Scene {
     // Helpers
     this.webGLScene.add(new THREE.GridHelper(500, 500));
     this.webGLScene.add(new THREE.AxesHelper(10));
-
 
     this.addLights();
     createEnvironment(this.webGLScene);
@@ -227,7 +214,6 @@ class Scene {
     this.renderCSS3D();
 
     //Controls:
-
     this.controls.update();
     this.controls2.update();
   }
@@ -235,7 +221,6 @@ class Scene {
   renderWebGL() {
     this.webGLRenderer.render(this.webGLScene, this.camera);
   }
-
 
   renderCSS3D() {
     this.CSSRenderer.render(this.cssScene, this.camera);
@@ -272,17 +257,6 @@ function makeVideoMaterial(id) {
   return videoMaterial;
 }
 
-// PAULINE CODE:
-
-
-    // this.webGLRenderer = new THREE.WebGLRenderer({
-    //   antialiasing: true,
-    // });
-    // this.webGLRenderer.setClearColor(new THREE.Color("lightblue"));
-    // this.webGLRenderer.setSize(this.width, this.height);
-
-
-
 function createWebGLRenderer(width, height) {
   var webGLRenderer = new THREE.WebGLRenderer({
     alpha:true,
@@ -299,7 +273,7 @@ function createWebGLRenderer(width, height) {
 }
 
 
-// Pauline CSS Render
+// DEBUGGIN CSS3D Render
 
 function createCSSRenderer(width, height) {
   var cssRenderer = new THREE.CSS3DRenderer();

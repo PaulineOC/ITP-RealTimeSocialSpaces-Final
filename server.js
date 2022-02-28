@@ -15,8 +15,9 @@ const express = require("express");
 const app = express();
 
 
-//PAULINE: 
-
+// DEBUGGING:
+//Public: renders my broken CSS3D code
+//Test public : template code that renders CSS3D correctly
 app.use(express.static("public"));
 //app.use(express.static("test-public"));
 
