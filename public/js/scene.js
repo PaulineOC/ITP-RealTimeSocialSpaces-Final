@@ -6,11 +6,11 @@
  *
  */
 
-
 class Scene {
   constructor() {
     //THREE scene
-    this.scene = new THREE.Scene();
+    this.webGLScene = new THREE.Scene();
+    this.cssScene = new THREE.Scene();
 
     //Utility
     this.width = window.innerWidth;
@@ -27,54 +27,63 @@ class Scene {
       5000
     );
     this.camera.position.set(0, 3, 6);
-    this.scene.add(this.camera);
+    this.webGLScene.add(this.camera);
 
     // create an AudioListener and add it to the camera
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
 
     //THREE WebGL renderer
-    this.renderer = new THREE.WebGLRenderer({
-      antialiasing: true,
-    });
-    this.renderer.setClearColor(new THREE.Color("lightblue"));
-    this.renderer.setSize(this.width, this.height);
+    this.webGLRenderer = createWebGLRenderer(this.width, this.height);
 
+    // this.webGLRenderer = new THREE.WebGLRenderer({
+    //   antialiasing: true,
+    // });
+    // this.webGLRenderer.setClearColor(new THREE.Color("lightblue"));
+    // this.webGLRenderer.setSize(this.width, this.height);
 
-    //PAULINE:
+    //PAULINE CSS Renderer:
+    this.CSSRenderer = createCSSRenderer(this.width, this.height);
+    this.CSSRenderer.setSize(this.width, this.height);
 
-    // const cssRenderer = createCssRenderer();
-    // const test = createHTMLPage();
-
-
-
-    
-
-    // Add Controls
-    //PAULINE:
-    this.controls = new FirstPersonControls(this.scene, this.camera, this.renderer);
-    this.controls2 = new MyControls(this.scene, this.camera, this.renderer);
+    console.log(this.CSSRenderer);
 
 
     //Push the canvas to the DOM
     let domElement = document.getElementById("canvas-container");
-    domElement.append(this.renderer.domElement);
+    domElement.appendChild(this.webGLRenderer.domElement);
 
     //PAULINE
-   // domElement.append(cssRenderer.domElement);
+   domElement.appendChild(this.CSSRenderer.domElement);
+
+   // TEST:
+
+
+   create3DPage(
+     this.webGLScene, 
+     this.cssScene,
+     15,
+     15,
+    new THREE.Vector3(10, 0, 10),
+    new THREE.Vector3(0, 0, 0),
+    'https://www.demo2s.com/javascript/javascript-three-js-creating-a-clickable-3d-rendering-of-a-webpage-ins.html');
+
+
+    // Add Controls
+    //PAULINE:
+    this.controls = new FirstPersonControls(this.webGLScene, this.camera, this.webGLRenderer);
+    this.controls2 = new MyControls(this.webGLScene, this.camera, this.webGLRenderer);
 
     //Setup event listeners for events and handle the states
     window.addEventListener("resize", (e) => this.onWindowResize(e), false);
 
     // Helpers
-    this.scene.add(new THREE.GridHelper(500, 500));
-    this.scene.add(new THREE.AxesHelper(10));
-
-
+    this.webGLScene.add(new THREE.GridHelper(500, 500));
+    this.webGLScene.add(new THREE.AxesHelper(10));
 
 
     this.addLights();
-    createEnvironment(this.scene);
+    createEnvironment(this.webGLScene);
 
     // Start the loop
     this.frameCount = 0;
@@ -86,11 +95,11 @@ class Scene {
   // Lighting 💡
 
   addLights() {
-    this.scene.add(new THREE.AmbientLight(0xffffe6, 0.7));
+    this.webGLScene.add(new THREE.AmbientLight(0xffffe6, 0.7));
 
     const pointlight = new THREE.PointLight(0xaaaaaa);
     pointlight.position.set(0,0,0);
-    this.scene.add(pointlight);
+    this.webGLScene.add(pointlight);
 
   }
 
@@ -116,7 +125,7 @@ class Scene {
     group.position.set(0, 0.25, 0);
 
     // add group to scene
-    this.scene.add(group);
+    this.webGLScene.add(group);
 
     peers[id].group = group;
     
@@ -127,7 +136,7 @@ class Scene {
   }
 
   removeClient(id) {
-    this.scene.remove(peers[id].group);
+    this.webGLScene.remove(peers[id].group);
   }
 
   // overloaded function can deal with new info or not
@@ -212,14 +221,24 @@ class Scene {
     }
 
     this.interpolatePositions();
+
+
+    this.renderWebGL();
+    this.renderCSS3D();
+
+    //Controls:
+
     this.controls.update();
     this.controls2.update();
-    this.render();
   }
 
-  render() {
-    this.renderer.render(this.scene, this.camera);
+  renderWebGL() {
+    this.webGLRenderer.render(this.webGLScene, this.camera);
+  }
 
+
+  renderCSS3D() {
+    this.CSSRenderer.render(this.cssScene, this.camera);
   }
 
   //////////////////////////////////////////////////////////////////////
@@ -231,9 +250,10 @@ class Scene {
     this.height = Math.floor(window.innerHeight * 0.9);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(this.width, this.height);
+    this.webGLRenderer.setSize(this.width, this.height);
   }
 }
+
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -252,42 +272,104 @@ function makeVideoMaterial(id) {
   return videoMaterial;
 }
 
+// PAULINE CODE:
 
 
-function createCssRenderer() {
-  var cssRenderer = new THREE.CSS3DRenderer();
-  cssRenderer.setSize(window.innerWidth, window.innerHeight);
-  cssRenderer.domElement.style.position = 'absolute';
-  cssRenderer.domElement.style.zIndex = 10;
-  cssRenderer.domElement.style.top = 0;
-  return cssRenderer;
+    // this.webGLRenderer = new THREE.WebGLRenderer({
+    //   antialiasing: true,
+    // });
+    // this.webGLRenderer.setClearColor(new THREE.Color("lightblue"));
+    // this.webGLRenderer.setSize(this.width, this.height);
+
+
+
+function createWebGLRenderer(width, height) {
+  var webGLRenderer = new THREE.WebGLRenderer({
+    alpha:true,
+    antialiasing: true
+  });
+  //Alice Blue = ECF8FF (similar to light blue)
+  webGLRenderer.setClearColor(0xECF8FF);
+  webGLRenderer.setSize(width, height);
+  // glRenderer.setPixelRatio(window.devicePixelRatio);
+  //glRenderer.domElement.style.position = 'absolute';
+  //glRenderer.domElement.style.zIndex = 1;
+  //glRenderer.domElement.style.top = 0;
+  return webGLRenderer;
 }
 
 
+// Pauline CSS Render
 
+function createCSSRenderer(width, height) {
+  var cssRenderer = new THREE.CSS3DRenderer();
+  cssRenderer.setSize(width, height);
+  //cssRenderer.domElement.style.position = 'absolute';
+  //cssRenderer.domElement.style.zIndex = 10;
+  //cssRenderer.domElement.style.top = 0;
+  return cssRenderer;
+}
 
-function createHTMLPage(id){
+function createPlane(w, h, position, rotation) {
+  var material = new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    opacity: 0.0,
+    side: THREE.DoubleSide
+  });
+  var geometry = new THREE.PlaneGeometry(w, h);
+  var mesh = new THREE.Mesh(geometry, material);
+  mesh.position.x = position.x;
+  mesh.position.y = position.y;
+  mesh.position.z = position.z;
 
-  const div = document.createElement( 'div' );
+  mesh.rotation.x = rotation.x;
+  mesh.rotation.y = rotation.y;
+  mesh.rotation.z = rotation.z;
+  return mesh;
+}
+
+function createCSSObject(w, h, position, rotation, url) {
+
+  console.log(position);
+
+  const div = document.createElement('div');
   div.style.width = '960px';
   div.style.height = '720';
   div.style.backgroundColor = '#000';
+  div.id = 'test'
 
   const iframe = document.createElement( 'iframe' );
   iframe.style.width = '960';
   iframe.style.height = '480px';
   iframe.style.border = '0px';
+  iframe.src = url;
 
-  iframe.src = 'https://threejs.org/docs/index.html#examples/en/renderers/CSS3DRenderer';
-  div.appendChild( iframe );
+  var CSSObject = new THREE.CSS3DObject(div);
+  CSSObject.position.x = position.x;
+  CSSObject.position.y = position.y;
+  CSSObject.position.z = position.z;
 
-  const object = new THREE.CSS3DObject(div);
-  object.position.set(0,0,15);
-
-  return {
-    obj: object,
-    renderer: new THREE.CSS3DRenderer(),
-  };
+  CSSObject.rotation.x = rotation.x;
+  CSSObject.rotation.y = rotation.y;
+  CSSObject.rotation.z = rotation.z;
+  CSSObject.element.onclick = function() {
+     console.log("HTML page clicked!");
+  }
+  return CSSObject;
 }
 
+function create3DPage(webGLScene, cssScene, w, h, position, rotation, url) {
+  var plane = createPlane(
+      w, h,
+      position,
+      rotation);
+      webGLScene.add(plane);
+  var cssObject = createCSSObject(
+      w, h,
+      position,
+      rotation,
+      url);
+  cssScene.add(cssObject);
 
+  console.log(cssScene);
+}

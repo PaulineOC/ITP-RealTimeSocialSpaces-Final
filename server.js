@@ -13,7 +13,12 @@
 // express will run our server
 const express = require("express");
 const app = express();
+
+
+//PAULINE: 
+
 app.use(express.static("public"));
+//app.use(express.static("test-public"));
 
 // HTTP will expose our server to the web
 const http = require("http").createServer(app);
