@@ -37,22 +37,42 @@ class Scene {
     this.webGLRenderer = createWebGLRenderer(this.width, this.height);
 
     //PAULINE CSS Renderer:
-    this.CSSRenderer = createCSSRenderer(this.width, this.height);
-    this.CSSRenderer.setSize(this.width, this.height);
+    this.CSSRenderer = createCSSRenderer(this.width, this.height),
+    // this.CSSRenderer.setSize(10, 10);
     console.log(this.CSSRenderer);
+
 
     //Push the canvas to the DOM
     let domElement = document.getElementById("canvas-container");
     domElement.appendChild(this.webGLRenderer.domElement);
     domElement.appendChild(this.CSSRenderer.domElement);
+
+    console.log('set some id');
+    console.log(this.CSSRenderer.domElement);
+
     
+
     // DEBUGGING: Test 3D Page
+
+    this.CSSRenderer.domElement.addEventListener('keydown',(ev) => {
+      console.log(ev.key);
+      if(ev.key === 'p'){
+
+        console.log('in test');
+      }
+  } );
+
+
+
+
+
+
     create3DPage(
      this.webGLScene, 
      this.cssScene,
      15,
-     15,
-    new THREE.Vector3(10, 0, 10),
+     5,
+    new THREE.Vector3(10, 3, 3),
     new THREE.Vector3(0, 0, 0),
     'https://www.demo2s.com/javascript/javascript-three-js-creating-a-clickable-3d-rendering-of-a-webpage-ins.html');
 
@@ -257,32 +277,7 @@ function makeVideoMaterial(id) {
   return videoMaterial;
 }
 
-function createWebGLRenderer(width, height) {
-  var webGLRenderer = new THREE.WebGLRenderer({
-    alpha:true,
-    antialiasing: true
-  });
-  //Alice Blue = ECF8FF (similar to light blue)
-  webGLRenderer.setClearColor(0xECF8FF);
-  webGLRenderer.setSize(width, height);
-  // glRenderer.setPixelRatio(window.devicePixelRatio);
-  //glRenderer.domElement.style.position = 'absolute';
-  //glRenderer.domElement.style.zIndex = 1;
-  //glRenderer.domElement.style.top = 0;
-  return webGLRenderer;
-}
 
-
-// DEBUGGIN CSS3D Render
-
-function createCSSRenderer(width, height) {
-  var cssRenderer = new THREE.CSS3DRenderer();
-  cssRenderer.setSize(width, height);
-  //cssRenderer.domElement.style.position = 'absolute';
-  //cssRenderer.domElement.style.zIndex = 10;
-  //cssRenderer.domElement.style.top = 0;
-  return cssRenderer;
-}
 
 function createPlane(w, h, position, rotation) {
   var material = new THREE.MeshBasicMaterial({
@@ -302,23 +297,53 @@ function createPlane(w, h, position, rotation) {
   return mesh;
 }
 
+
+
+
+
+// DEBUGGING CSS3D Render
+
+function createWebGLRenderer(width, height) {
+  var webGLRenderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialiasing: true
+  });
+  //Alice Blue = ECF8FF (similar to light blue)
+  webGLRenderer.setClearColor(0xECF8FF);
+  webGLRenderer.setSize(width, height);
+  // glRenderer.setPixelRatio(window.devicePixelRatio);
+  webGLRenderer.domElement.style.position = 'absolute';
+  webGLRenderer.domElement.style.zIndex = 1;
+  webGLRenderer.domElement.style.top = 0;
+  return webGLRenderer;
+}
+
+
+function createCSSRenderer(width, height) {
+  var cssRenderer = new THREE.CSS3DRenderer();
+  cssRenderer.setSize(width, height);
+  cssRenderer.domElement.style.position = 'absolute';
+  cssRenderer.domElement.style.zIndex = 10;
+  cssRenderer.domElement.style.top = 0;
+  cssRenderer.domElement.style.pointerEvents = "none";
+  return cssRenderer;
+}
+
 function createCSSObject(w, h, position, rotation, url) {
-
-  console.log(position);
-
-  const div = document.createElement('div');
-  div.style.width = '960px';
-  div.style.height = '720';
-  div.style.backgroundColor = '#000';
-  div.id = 'test'
-
   const iframe = document.createElement( 'iframe' );
-  iframe.style.width = '960';
-  iframe.style.height = '480px';
+  iframe.width = '150px';
+  iframe.height = '150x';
   iframe.style.border = '0px';
   iframe.src = url;
 
-  var CSSObject = new THREE.CSS3DObject(div);
+  iframe.onclick = () => {
+    console.log('click in iframe');
+  }
+  iframe.addEventListener('keydown', () => {
+    console.log('in iframe keydown');
+  });
+
+  var CSSObject = new THREE.CSS3DObject(iframe);
   CSSObject.position.x = position.x;
   CSSObject.position.y = position.y;
   CSSObject.position.z = position.z;
@@ -326,7 +351,10 @@ function createCSSObject(w, h, position, rotation, url) {
   CSSObject.rotation.x = rotation.x;
   CSSObject.rotation.y = rotation.y;
   CSSObject.rotation.z = rotation.z;
-  CSSObject.element.onclick = function() {
+
+
+  CSSObject.element.onclick = function(event) {
+    event.preventDefault();
      console.log("HTML page clicked!");
   }
   return CSSObject;
