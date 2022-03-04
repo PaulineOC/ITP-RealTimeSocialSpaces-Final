@@ -17,6 +17,8 @@ class MyControls {
         document.body.addEventListener('keyup',(ev) => {
             this.keys[ev.key] = false;
         });
+        
+        createModal(scene, camera, renderer);
     }
 
     update(avatar, scene, experienceState){
@@ -35,6 +37,11 @@ class MyControls {
 
         if (this.keys["Escape"]) {
             console.log('Pressed ESC: Closing modal ');
+
+            if(experienceState.isModalOpen){
+                closeModal(avatar, scene, experienceState);
+            }
+            
             return {
                 ...experienceState,
                 isModalOpen: false,
@@ -44,39 +51,35 @@ class MyControls {
     }
 }
 
-// function createCssObject(w, h, position, rotation, url) {
-//     var html = [
-//       '<div id="MAINPARENT"style="width:' + w + 'px; height:' + h + 'px;">',
-//       '<iframe src="' + url + '" width="' + w + '" height="' + h + '">',
-//       '</iframe>',
-//       '</div>'
-//     ].join('\n');
-//     var div = document.createElement('div');
-//     $(div).html(html);
-//     var cssObject = new THREE.CSS3DObject(div);
-//     cssObject.position.x = position.x;
-//     cssObject.position.y = position.y;
-//     cssObject.position.z = position.z;
-//     cssObject.rotation.x = rotation.x;
-//     cssObject.rotation.y = rotation.y;
-//     cssObject.rotation.z = rotation.z;
-//     cssObject.element.onclick = function() {
-//       console.log("element clicked!");
-//     }
-//     return cssObject;
-//   }
-
-const openModal = (camera, scene, experienceState) => {
-
+const createModal = (camera, scene, experienceState) => {
     const modalBackground = document.createElement('div');
     modalBackground.classList.add('modalBackground');
+    modalBackground.id = 'modal-background';
 
-    // iFrameParent.classList.add('modal');
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modalContent');
 
     const iFrame = document.createElement('iframe');
-    iFrame.classList.add('modal');
+    iFrame.classList.add('iframe');
 
-    modalBackground.appendChild(iFrame);
+    //TEST: 
+    // TODO 
+    // iFrame.src = experienceState.modalLink;
+    iFrame.src  = 'https://349xov.csb.app/';
 
+    modalContent.appendChild(iFrame);
+    modalBackground.appendChild(modalContent);
     document.body.append(modalBackground);
+
+    modalBackground.classList.add('hidden');
+}
+
+const openModal = (camera, scene, experienceState) => {
+    document.getElementById('modal-background').classList.remove('hidden');
 };
+
+const closeModal = () => {
+    document.getElementById('modal-background').classList.add('hidden');
+    console.log('in close modal');
+
+}

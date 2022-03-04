@@ -111,7 +111,12 @@ function createEnvironment(scene) {
  
   //MeshPhongMaterial
   const exteriorWallTexture = new THREE.TextureLoader().load(wallSettings.exteriorTexturePath);
+  exteriorWallTexture.wrapS = THREE.RepeatWrapping;
+  exteriorWallTexture.wrapT = THREE.RepeatWrapping;
+  exteriorWallTexture.repeat.set(1,1);
+
   const exteriorWallMaterial = new THREE.MeshPhongMaterial({ map: exteriorWallTexture });
+
   const interiorWallMaterial = new THREE.MeshPhongMaterial( { color: 0xeae3c9 } );
   exteriorWallMaterial.side = THREE.DoubleSide;
   interiorWallMaterial.side = THREE.DoubleSide;
