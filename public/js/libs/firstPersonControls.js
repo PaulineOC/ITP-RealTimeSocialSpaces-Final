@@ -76,17 +76,9 @@ class FirstPersonControls {
                     case 39: // right
                     case 68: // d
                         this.moveRight = true
-                        break
-
-                    case 32: // space
-                        if (this.canJump === true) this.velocity.y = jumpSpeed
-                        this.canJump = false
-                        break
-
-
+                        break;
                 }
             },
-            false
         )
 
         document.addEventListener(
@@ -155,9 +147,9 @@ class FirstPersonControls {
         this.velocity.y = 0
     }
 
-    update() {
+    update(camera, scene, experience) {
         this.detectCollisions()
-        this.updateControls()
+        this.updateControls(camera, scene, experience);
     }
 
     getCollidables() {
@@ -172,7 +164,12 @@ class FirstPersonControls {
 
     // update for these controls, which are unfortunately not included in the controls directly...
     // see: https://github.com/mrdoob/three.js/issues/5566
-    updateControls() {
+    updateControls(camera, scene, experienceState) {
+        
+       //PAULINE: Don't move if the modal is open
+        if(experienceState && experienceState.isModalOpen){
+            return;
+        }
         let speed = 100
 
         var time = performance.now()

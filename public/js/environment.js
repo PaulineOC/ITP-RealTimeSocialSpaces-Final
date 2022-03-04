@@ -133,8 +133,8 @@ function createEnvironment(scene) {
 
   scene.add(rightWallInterior);
   scene.add(rightWallExterior);
-}
 
+}
 
 function createFrontAndBackWall(exteriorMaterial, interiorMaterial){
 
@@ -208,8 +208,7 @@ function createFrontAndBackWall(exteriorMaterial, interiorMaterial){
     frontWallExterior: frontWallExteriorMesh,
     frontWallInterior: frontWallInteriorMesh,
   };
-};
-
+}
 
 function createDoor(startingX, startingY, length, height){
   const doorway = new THREE.Path();
@@ -234,7 +233,6 @@ function createWindow(startingX, startingY, length, height){
 
   return window;
 }
-
 
 function createSideWalls(exteriorMaterial, interiorMaterial){
   const interiorWallShape = new THREE.Shape().moveTo(0, 0)
@@ -304,7 +302,6 @@ function createSideWalls(exteriorMaterial, interiorMaterial){
 
 }
 
-
 function createFloor() {
   const ground = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(floorSettings.floorSize.length,floorSettings.floorSize.width), 
@@ -312,60 +309,26 @@ function createFloor() {
   ground.rotateX(floorSettings.rotation);
   ground.position.set(floorSettings.floorPosition.x, 0, floorSettings.floorPosition.z);
   return ground;
-};
+}
 
+function createPlane(w, h, position, rotation) {
+  var material = new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    opacity: 0.0,
+    side: THREE.DoubleSide
+  });
+  var geometry = new THREE.PlaneGeometry(w, h);
+  var mesh = new THREE.Mesh(geometry, material);
+  mesh.position.x = position.x;
+  mesh.position.y = position.y;
+  mesh.position.z = position.z;
+
+  mesh.rotation.x = rotation.x;
+  mesh.rotation.y = rotation.y;
+  mesh.rotation.z = rotation.z;
+  return mesh;
+}
 
 function updateEnvironment(scene) {
   myMesh.position.x += 0.01;
-}
-
-
-//Test code: 
-function sideWallWithWindow(){
-
-  const group = new THREE.Group();
-
-  const rectLength = 24;
-  const rectWidth = 6;
-
-  const mainWall = new THREE.Shape().moveTo(0, 0).lineTo(0, rectWidth).lineTo(rectLength, rectWidth).lineTo(rectLength, 0).lineTo(0, 0);
-
-  // Window Hole
-  const window = new THREE.Path();
-  const windowLength = 3;
-  const windowHeight = 2;
-
-  const windowDistanceFromWall = 2;
-  const windowDistanceFromFloor = 1;
-
-  window.moveTo(windowDistanceFromWall,windowDistanceFromFloor);
-  window.lineTo(windowDistanceFromWall,windowDistanceFromFloor+windowHeight);
-  window.lineTo(windowDistanceFromWall+windowLength, windowDistanceFromFloor+windowHeight );
-  window.lineTo(windowDistanceFromWall+windowLength,windowDistanceFromFloor );
-  window.lineTo(windowDistanceFromWall, windowDistanceFromFloor);
-
-  mainWall.holes.push(window);
-
-  const extrudeSettings = {
-    depth: 0.25,
-    bevelEnabled: true,
-    bevelSegments: 1,
-    steps: 5,
-    bevelThickness: 1,
-    bevelSize: 0,
-    bevelOffset: 0,
-  };
-
-  const geometry = new THREE.ExtrudeBufferGeometry(mainWall, extrudeSettings);
-  // geometry.center();
-  // geometry.rotateX(Math.PI * -0.5);
-  const material = new THREE.MeshPhysicalMaterial({
-    color: 0x00ff00,
-  });
-  material.side = THREE.DoubleSide;
-
-  const mesh = new THREE.Mesh(geometry, material);
-  group.add(mesh);
-
-return group  ;
 }
