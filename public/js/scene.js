@@ -21,9 +21,11 @@ class Scene {
 
     this.startPos = {x: 11.5, y: 3, z: 25};
 
+    this.canvasHeight = 0.95;
+
     //Utility
     this.width = window.innerWidth;
-    this.height = window.innerHeight * 0.9;
+    this.height = window.innerHeight * this.canvasHeight;
 
     // lerp value to be used when interpolating positions and rotations
     this.lerpValue = 0;
@@ -50,6 +52,13 @@ class Scene {
     //Push the canvas to the DOM
     let domElement = document.getElementById("canvas-container");
     domElement.appendChild(this.webGLRenderer.domElement);
+
+
+    let child = domElement.children[0];
+    if(child){
+      child.classList.add('renderedCanvas');
+      child.style.position = 'relative';
+    }
 
 
     // this.update = this.update.bind(this);
@@ -225,7 +234,7 @@ class Scene {
   // Event Handlers 🍽
   onWindowResize(e) {
     this.width = window.innerWidth;
-    this.height = Math.floor(window.innerHeight * 0.9);
+    this.height = Math.floor(window.innerHeight * this.canvasHeight);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
     this.webGLRenderer.setSize(this.width, this.height);

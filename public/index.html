@@ -295,9 +295,11 @@
 		console.log("Starting");
 		document.getElementById('intro').classList.add('hidden');
 		const canvas = document.getElementById('canvas-container');
-		const HUD = document.getElementById('HUD');
-		HUD.classList.remove("hidden");
+
+		document.body.classList.add('hideScroll');
 		canvas.classList.remove('hidden');
+		
+		
 		};
 	</script>
 

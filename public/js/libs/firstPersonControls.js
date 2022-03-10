@@ -199,6 +199,10 @@ class FirstPersonControls {
             this.snapCamera();
 
             this.setClosestPainting();
+
+            if(!this.experienceState.closestPainting){
+                return;
+            }
             const { distance, object} = this.experienceState.closestPainting;
 
             // const distanceToBackWall = this.camera.position.z;
@@ -207,7 +211,7 @@ class FirstPersonControls {
             // const distanceToRightWall = 24.5 - this.camera.position.x
 
 
-            const { canOpenModal, closestPainting, currentlyFacingWall }  = this.experienceState;
+            const { canOpenModal, currentlyFacingWall }  = this.experienceState;
 
             if(canOpenModal){
                 const title = object.userData.id
