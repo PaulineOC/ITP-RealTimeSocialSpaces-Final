@@ -91,6 +91,18 @@ body{
 	display: flex;
 	font-size: 24px;
 	justify-content: space-around;
+
+    font-family: sans-serif;
+    margin-right: 4vw;
+    margin-left: 4vw;
+    background-color: #ebe5d0;
+    font-size: 1.8vw;
+    line-height: 1.5;
+ 	display: flex;
+ 	justify-content: space-around;
+    margin-top: 0;
+    margin-bottom: 0;
+
 }
 
 #instructions-container{
@@ -107,10 +119,15 @@ body{
 	flex-direction: column;
 }
 
-
 .face-row{
 	padding-bottom: 1.5vh;
 	display: flex;
 	justify-content: space-between;
 
+}
+
+.renderedCanvas{
+    background-color: blue;
+    position: relative !important;
+    
 }

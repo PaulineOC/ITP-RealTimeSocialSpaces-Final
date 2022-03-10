@@ -50,6 +50,14 @@ class Scene {
     //Push the canvas to the DOM
     let domElement = document.getElementById("canvas-container");
     domElement.appendChild(this.webGLRenderer.domElement);
+
+    const child = domElement.children[0];
+    if(child){
+      child.style.postion = 'relative !important';
+      child.classList.add('renderedCanvas');
+    }
+
+
     // this.update = this.update.bind(this);
 
     // Add Controls
