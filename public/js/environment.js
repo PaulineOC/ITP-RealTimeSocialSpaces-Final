@@ -127,6 +127,9 @@ function createEnvironment(scene) {
   const sideWallMeshes = createSideWalls(exteriorWallMaterial, interiorWallMaterial);
   const { leftWallExterior, leftWallInterior, rightWallExterior, rightWallInterior } = sideWallMeshes;
 
+  const allPaintings = createPaintings();
+  const { Honeywell, Nellis, Rogers } = allPaintings;
+
   scene.add(backWallInterior);
   scene.add(backWallExterior);
 
@@ -138,6 +141,10 @@ function createEnvironment(scene) {
 
   scene.add(rightWallInterior);
   scene.add(rightWallExterior);
+
+  scene.add(Honeywell);
+  scene.add(Nellis);
+  scene.add(Rogers);
 
 }
 
@@ -316,12 +323,79 @@ function createFloor() {
   return ground;
 }
 
-function createPlane(w, h, position, rotation) {
-  var material = new THREE.MeshBasicMaterial({
-    color: 0x000000,
-    opacity: 0.0,
-    side: THREE.DoubleSide
-  });
+function createPaintings(scene){
+  let textureHoneywell = new THREE.TextureLoader().load('../assets/Honeywell.png',);
+  let materialHoneywelll = new THREE.MeshBasicMaterial({ map: textureHoneywell });
+
+  let textureNellis = new THREE.TextureLoader().load('../assets/Nellis.png',);
+  let materialNellis = new THREE.MeshBasicMaterial({ map: textureNellis });
+
+  let textureRogers = new THREE.TextureLoader().load('../assets/Rogers.png',);
+  let materialRogers = new THREE.MeshBasicMaterial({ map: textureRogers });
+
+  const Honeywell = createPaintingMesh(
+    6,
+    4.291, 
+    0.5,
+    {x: 11.5, y: 2.5, z: 0.25},
+    {x: 0, y: 0, z: 0},
+    materialHoneywelll,
+  );
+
+  const Nellis = createPaintingMesh(
+    5,
+    4.189, 
+    0.5,
+    {x: 0.25, y: 2.5, z: 9},
+    {x: 0, y: Math.PI/2, z: 0},
+    materialNellis,
+  );
+
+  const Rogers = createPaintingMesh(
+    2.6887,
+    4, 
+    0.5,
+    {x: 23.75, y: 2.5, z: 9},
+    {x: 0, y: -Math.PI/2, z: 0},
+    materialRogers,
+  );
+
+  return {
+    Honeywell, 
+    Nellis,
+    Rogers
+  };
+
+}
+
+function createPaintingMesh(w, h, d,  position, rotation, material) {
+
+  var boxMaterials = [
+    new THREE.MeshBasicMaterial( { color: 0xffffff } ),
+    new THREE.MeshBasicMaterial( { color: 0xffffff } ),
+    new THREE.MeshBasicMaterial( { color: 0xffffff } ),
+    new THREE.MeshBasicMaterial( { color: 0xffffff } ),
+    material,
+    new THREE.MeshBasicMaterial( { color: 0xffffff } ),
+  ];
+
+  const geometry = new THREE.BoxGeometry( w, h, d);
+  var mesh = new THREE.Mesh(geometry, boxMaterials);
+
+  mesh.position.x = position.x;
+  mesh.position.y = position.y;
+  mesh.position.z = position.z;
+
+  mesh.rotation.x = rotation.x;
+  mesh.rotation.y = rotation.y;
+  mesh.rotation.z = rotation.z;
+  return mesh;
+
+}
+
+function createPlane(w, h, position, rotation, material) {
+  material.side = THREE.DoubleSide;
+
   var geometry = new THREE.PlaneGeometry(w, h);
   var mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = position.x;

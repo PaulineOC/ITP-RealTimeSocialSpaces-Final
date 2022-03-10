@@ -13,6 +13,7 @@ class Scene {
 
     this.experienceState = {
       isModalOpen: false,
+      isShowingVideo: false,
     };
 
     this.startPos = {x: 11.5, y: 3, z: 40};
