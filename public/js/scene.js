@@ -211,9 +211,6 @@ class Scene {
     this.renderWebGL();
 
     //Controls:
-    // const { newScene, experienceState , newCamera} = this.myControls.update(this.webGLScene, this.camera, this.experienceState);
-    // console.log('old camera:', this.camera.rotation.y);
-    // console.log('new camera', newCamera.rotation.y);
   
     this.controls.update(this.webGLScene, this.camera, this.frameCount);
   }
