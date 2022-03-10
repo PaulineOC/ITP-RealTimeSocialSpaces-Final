@@ -2,6 +2,27 @@
     display: none;
 }
 
+
+.web-body{
+    font-family: sans-serif;
+    margin: 4vw;
+    background-color: #ebe5d0;
+    font-size: 1.8vw;
+    line-height: 1.5;
+}
+.web-img{
+    position: relative;
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3vw;
+    margin-bottom: 3vw;
+    height: auto;
+    max-width: 100%;
+
+}
+
 .modalBackground{
     position: fixed;
     z-index: 1;
@@ -15,21 +36,21 @@
 }
 
 .modalContent{
-    background-color: #fefefe;
 
-    margin-top: 5vh;
-    margin-bottom: auto;
-    margin-left: auto;
-    margin-right: auto;
+    font-family: sans-serif;
+    margin: 4vw;
+    background-color: #ebe5d0;
+    font-size: 1.8vw;
+    line-height: 1.5;
 
-    padding: 20px;
-    border: 1px solid #888;
-    height: 80vh;
-    width: 80vw; 
+    overflow-y: scroll;
+    height: 90vh;
+    width: 90vw; 
    
 }
 
 .iframe{
     width: 100%;
     height: 100%;
+    z-index: 2;
 }

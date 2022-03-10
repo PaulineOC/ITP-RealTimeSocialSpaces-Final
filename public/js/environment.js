@@ -167,7 +167,12 @@ function createFrontAndBackWall(exteriorMaterial, interiorMaterial){
   const backWallExteriorGeometry = new THREE.ExtrudeBufferGeometry(exteriorWallShape, wallSettings.wallExtrudeSettings);
 
   const backWallExteriorMesh = new THREE.Mesh(backWallExteriorGeometry, exteriorMaterial);
+  backWallExteriorMesh.userData.id = 'backWallExterior';
+  backWallExteriorMesh.userData.type = 'exterior-wall';
+
   const backWallInteriorMesh = new THREE.Mesh(backWallInteriorGeometry, interiorMaterial);
+  backWallInteriorMesh.userData.id = 'backWallInterior';
+  backWallInteriorMesh.userData.type = 'interior-wall';
 
   backWallExteriorMesh.position.set(wallSettings.backWallExteriorPos.x,0,wallSettings.backWallExteriorPos.z);
   backWallInteriorMesh.position.set(wallSettings.backWallInteriorPos.x,0,wallSettings.backWallInteriorPos.z);
@@ -208,10 +213,14 @@ function createFrontAndBackWall(exteriorMaterial, interiorMaterial){
 
   const frontWallInteriorGeometry = new THREE.ExtrudeBufferGeometry(frontWallInteriorShape, wallSettings.wallExtrudeSettings);
   const frontWallInteriorMesh = new THREE.Mesh(frontWallInteriorGeometry, interiorMaterial);
+  frontWallInteriorMesh.userData.id = 'frontWallInterior';
+  frontWallInteriorMesh.userData.type = 'interior-wall';
   frontWallInteriorMesh.position.set(wallSettings.frontWallInteriorPos.x,0,wallSettings.frontWallInteriorPos.z);
 
   const frontWallExteriorGeometry = new THREE.ExtrudeBufferGeometry(frontWallExteriorShape, wallSettings.wallExtrudeSettings);
   const frontWallExteriorMesh = new THREE.Mesh(frontWallExteriorGeometry, exteriorMaterial);
+  frontWallExteriorMesh.userData.type = 'exterior-wall';
+
   frontWallExteriorMesh.position.set(wallSettings.frontWallExteriorPos.x,0,wallSettings.frontWallExteriorPos.z);
 
   return {
@@ -292,17 +301,26 @@ function createSideWalls(exteriorMaterial, interiorMaterial){
 
   const leftSideWallInteriorMesh = new THREE.Mesh(interiorWallGeometry, new THREE.MeshPhongMaterial( { color: 0x00ff00 } ));
   const leftSideWallExteriorMesh = new THREE.Mesh(exteriorWallGeometry, exteriorMaterial);
-
+  leftSideWallInteriorMesh.userData.id = 'leftSideWallInterior';
+  leftSideWallInteriorMesh.userData.type = 'interior-wall';
   leftSideWallInteriorMesh.rotation.set(0, Math.PI * -0.5,0);
   leftSideWallInteriorMesh.position.set(wallSettings.leftWallInteriorPos.x,0,wallSettings.leftWallInteriorPos.z);
 
+
+  leftSideWallExteriorMesh.userData.id = 'leftSideWallExterior';
+  leftSideWallExteriorMesh.userData.type = 'exterior-wall';
   leftSideWallExteriorMesh.rotation.set(0, Math.PI * -0.5,0);
   leftSideWallExteriorMesh.position.set(wallSettings.leftWallExteriorPos.x,0,wallSettings.leftWallExteriorPos.z);
 
   const rightWallInteriorMesh = leftSideWallInteriorMesh.clone();
+  rightWallInteriorMesh.userData.id = 'rightWallInterior';
+  rightWallInteriorMesh.userData.type = 'interior-wall';
+
   rightWallInteriorMesh.position.set(wallSettings.rightWallInteriorPos.x,0,wallSettings.rightWallInteriorPos.z);
 
   const rightWallExteriorMesh = leftSideWallExteriorMesh.clone();
+  rightWallExteriorMesh.userData.id = 'rightSideWallExterior';
+  rightWallExteriorMesh.userData.type = 'exterior-wall';
   rightWallExteriorMesh.position.set(wallSettings.rightWallExteriorPos.x,0,wallSettings.rightWallExteriorPos.z);
 
   return {
@@ -341,6 +359,8 @@ function createPaintings(scene){
     {x: 0, y: 0, z: 0},
     materialHoneywelll,
   );
+  Honeywell.userData.id = 'honeywell';
+  Honeywell.userData.type = 'painting';
 
   const Nellis = createPaintingMesh(
     5,
@@ -350,6 +370,8 @@ function createPaintings(scene){
     {x: 0, y: Math.PI/2, z: 0},
     materialNellis,
   );
+  Nellis.userData.id = 'nellis';
+  Nellis.userData.type = 'painting';
 
   const Rogers = createPaintingMesh(
     2.6887,
@@ -359,6 +381,10 @@ function createPaintings(scene){
     {x: 0, y: -Math.PI/2, z: 0},
     materialRogers,
   );
+
+  Rogers.userData.id = 'rogers';
+  Rogers.userData.type = 'painting';
+
 
   return {
     Honeywell, 

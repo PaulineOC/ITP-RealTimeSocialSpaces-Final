@@ -34,13 +34,264 @@
 			border: 1em;
 			color: rgb(223, 223, 223);
 		}
+
+		#modal-content {
+            font-family: sans-serif;
+            margin: 4vw;
+            background-color: #ebe5d0;
+            font-size: 1.8vw;
+            line-height: 1.5;
+			overflow-y: scroll;
+        }
+        .modal-img {
+            position: relative;
+            width: 60%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 3vw;
+            margin-bottom: 3vw;
+            height: auto;
+            max-width: 100%;
+        }
 	</style>
 </head>
 
 <body style="background: yellow; margin: 0; padding: 0">
 
+	<div id="intro" class="hidden web-body">
+		<h1 id="Title">"Mouth & Toes" Virtual Exibition Space</h1>
+  
+		<h2>
+		  <i>Created by Pauline Ceraulo and Kseniia Balaenkova</i>
+		</h2>
+  
+		<p>
+		  <i>Based on the book "Mouth & Toes: The World of 19th-Century Silhouette Artists with Disabilities by Laurel Daen and Marianne R. Petit. All rights reserved by the authors. Do not copy, print, or distribute the content without prior written permission.</i>
+		</p>
+  
+		<h2>About this Exibition Space</h3>
+		<p>
+		  This virtual exibition space that you are about to enter tells the stories of three artists—Martha Ann Honeywell, Sarah Rogers, and Saunders Ken Grems Nellis—who worked at the intersection of visual art, performance, and disability in the early to mid-nineteenth century. Born with significant physical disabilities, these artists traveled throughout North and South America, the Caribbean, and Europe creating and selling silhouettes and performing their unexpected capacities and incapacities for customers. Although rarely remembered today, these artists’ lives and works testify to the power of disability as a source of creative inspiration and profit. Capitalizing on the prejudices and curiosities of their patrons, Honeywell, Rogers, and Nellis made art, traveled the world, and sustained distinguished careers.
+		</p>
+  
+		<img
+			class="web-img"
+			src="./paintings/assets/intro.png"
+			alt="Silhouette of a woman with scissors in her mouth"
+		/>
+	</div>
+
 	<div id="canvas-container"></div>
 
+
+	<div id="modal-background" class="modalBackground hidden">
+		<div id="modal-content" class="modalContent">
+			<div id="honeywell" class="hidden web-body">
+				<h1 id="honeywellTitle">Martha Ann Honeywell</h1>
+		
+				<h2 id="honeywellArtInfo">
+				<i> "Silhouettes". 1846-1848. Paper, ink, wood, gilding.</i>
+				</h2>
+		
+				<h3>Art description</h3>
+		
+				<p id="artBackgroundHoneywell">
+				In 1848, Lydia Ann Battin and Jackson Hughes of West Chester,
+				Pennsylvania celebrated their marriage by commissioning a unique pair of
+				cut-and-paste silhouettes. The bust-length profiles—cut skillfully from
+				black paper, pasted onto white paper, and arranged so that they gazed at
+				one another—were not particularly unusual, apart from the superb
+				craftsmanship they displayed. Instead, the profiles’ uniqueness lay in
+				the inscriptions penned below the images: “Cut Without Hands by M. A.
+				Honeywell.”
+				</p>
+		
+				<img
+				src="./paintings/assets/Honeywell1.png"
+				alt="Silhouettes of a papercut of a woman and a man facing each other in a picture frame"
+				class="web-img"
+				/>
+		
+				<h3>About the artist</h3>
+		
+				<p id="aboutHoneywell">
+				Honeywell was an extraordinary American artist. For nearly sixty years
+				(1798-1856), she traveled, primarily by herself, across the expanding
+				United States and in more than five countries around the world (Canada,
+				France, Germany, Switzerland, and the United Kingdom), enthralling
+				patrons with her seemingly surprising confluence of artistic ability and
+				physical disability. Customers like the Hugheses attended Honeywell’s
+				shows as much to examine and acquire her visual art as to gaze at her
+				atypical body. Capitalizing on this unexpected combination of artistic
+				capacity and physical incapacity, Honeywell sustained a successful and
+				profitable career.
+				</p>
+		
+				<img
+				src="./paintings/assets/Honeywell2.gif"
+				alt="Animation of silhoette of Honeywell holding scissors in her mouth"
+				class="web-img"
+				/>
+		
+				<h3>Interesting fact</h3>
+		
+				<p id="factHoneywell">
+				Honeywell’s career began early. Born in Westchester, New York in 1786,
+				her parents moved shortly after to New York City, where they opened a
+				fruit store on Harman Street. The family soon learned that Martha Ann’s
+				body attracted customers as much as the apples and pears they sold.
+				“Hundreds, particularly of young people,” one patron recalled, went to
+				the store “under the pretense of purchasing fruit but in reality for the
+				purpose of seeing this marvellous child.” From this experience,
+				Honeywell’s parents decided that exhibition could be a way for Martha
+				Ann to earn her living. They arranged for her first show at the nearby
+				American Museum at the young age of twelve.
+				</p>
+		
+				<img
+				src="./paintings/assets/Honeywell3.png"
+				alt="Silhouette of a young girl seated on a counter, she wears a dress with a bow and has no arms. There is a man standing behind her, on the counter there are various scales and items"
+				class="web-img"
+				/>
+		  	</div>
+
+			  <div id="nellis" class="hidden web-body">
+				<h1 id="nellisTitle">Saunders Ken Grems Nellis</h1>
+				<h2 id="nellisArtInfo">
+				  <i>"Cut Paper Picture". 1829-1865. Ink, paper.</i>
+				</h2>
+		  
+				<h3>Art description</h3>
+				<p id="artBackgroundNellis">
+				  Like Honeywell and Rogers, Nellis centered his exhibitions on the
+				  duality of artistic ability and physical difference. He usually began
+				  his shows with demonstrations of his skills in the visual arts, creating
+				  watch-papers, valentines, paper fly-boxes, and silhouettes, all with his
+				  feet. Then the artist captivated customers with performances of
+				  dexterous tasks. He wound a watch, shot a bow and arrow, loaded and
+				  fired a pistol, and even shaved a member of the audience. Nellis’s
+				  exhibitions closed with music and dance. He played the violin,
+				  accordion, cello, triangle, and drums; sang; and danced. Audience
+				  members described their visits as “astonishing” and “entertaining.”
+				</p>
+		  
+				<img
+				  class="web-img"
+				  src="./paintings/assets/Nellis1.png"
+				  alt="Silhouette of Nellis shooting a bow and arrow with his feet"
+				/>
+		  
+				<h3>About the artist</h3>
+		  
+				<p id="aboutNellis">
+				  While Honeywell was performing at the Peale Museum in Baltimore,
+				  Saunders Ken Grems Nellis, then only eleven years old, was exhibiting
+				  his body, which lacked arms and hands, and his artistic skills across
+				  town at the Maryland Museum, launched the previous year by James
+				  Griffiths. Patrons described Nellis’s shows—which combined visual art,
+				  music, dance, theater, and comedy—as evidence of “extraordinary genius.”
+				  Over the next four decades, the artist performed in hundreds of venues
+				  for thousands of patrons across North and South America, the Caribbean,
+				  and Europe.
+				</p>
+		  
+				<img
+				  src="./paintings/assets/Nellis2.gif"
+				  alt="Animation of silhoette of Nellis drawing with his foot"
+				  class="web-img"
+				/>
+		  
+				<h3>Interesting fact</h3>
+		  
+				<p id="factNellis">
+				  As Nellis performed more in museums, the carnivalesque nature of his
+				  shows increased. Some museum managers paired his exhibitions with those
+				  of African, Native, and Hispanic peoples whose racialized features they
+				  displayed as the primary attraction. Catering to white customers’
+				  prejudices and penchant for spectacle, museum operators exhibited men
+				  and women of color as freakish and subhuman. Again, performances of
+				  disability mirrored those of race. Museumgoers marveled at Nellis’s body
+				  just as they did the racially othered men and women on view.
+				</p>
+		  
+				<img
+				  src="./paintings/assets/Nellis3.png"
+				  alt="Silhouette of Nellis dancing next to two other people performing"
+				  class="web-img"
+				/>
+			  </div>
+
+			  <div id="rogers" class="hidden web-body">
+				<h1 id="rogersTitle">Sarah Rogers</h1>
+		  
+				<h2 id="rogersArtInfo">
+				  <i> "Watercolor". 1806-1815. Paper, ink, watercolors. </i>
+				</h2>
+		  
+				<h3>Art description</h3>
+				<p id="artBackgroundRogers">
+				  Audience members were not the only admirers of Rogers’s artwork and she
+				  soon attracted the attention of other artists. Charles Willson Peale,
+				  one of the foremost painters, naturalists, and museum proprietors of the
+				  day, learned of her shows and acquired their productions for the
+				  collection of his Philadelphia Museum. Rogers donated a “drawing of
+				  Flowers” (two Burdock flowers with insects nearby). Like other viewers,
+				  Peale valued Rogers for their confluence of artistic skill and physical
+				  difference, which appealed to his dual interests in art and the natural
+				  world.
+				</p>
+		  
+				<img
+					class="web-img"
+					src="./paintings/assets/Rogers1.png"
+					alt="Silhouette representation of a botanical drawing by Sally Rogers, Flowers budding."
+				/>
+		  
+				<h3>About the artist</h3>
+		  
+				<p id="aboutRogers">
+				  Rogers was nearly Honeywell’s age—born just three years later, in 1789,
+				  in Lempster, New Hampshire. Although she began making art at a young
+				  age, her first public recognition came in 1806 when her work caught the
+				  attention of a local newspaper editor. Describing her “striking”
+				  artistic productions and body, which was “divested of all use of all of
+				  her limbs,” the editor encouraged readers to call on Rogers to see her
+				  faculties and issue monetary donations. This suggestion must have proved
+				  satisfactory—and financially advantageous—to the artist. Within months
+				  she began performing at the Columbian Museum in Boston and launched a
+				  national tour.
+				</p>
+		  
+				<img
+				  src="./paintings/assets/Rogers2.gif"
+				  class="web-img"
+				  alt="Animation of silhoette of Rogers drawing with a paintbrush  in her mouth"
+				/>
+		  
+				<h3>Interesting fact</h3>
+		  
+				<p id="factRogers">
+				  Rogers’s exhibitions, like Honeywell’s, centered on the juxtaposition of
+				  ability and disability. Her advertisements described how “Nature” had
+				  “deprived” her of limbs but, as if to make “amends,” bestowed on her
+				  artistic talents that “surpassed all human belief.” Patrons tended to
+				  agree. They called her shows “interesting and curious” and her art
+				  deserving of “wonder and approbation.” Honeywell and Rogers’s combined
+				  exhibition in Charleston proved especially popular. Customers convinced
+				  them to extend their stay in the city and the artists arranged joint
+				  shows in Savannah, Georgia and Norfolk, Virginia based on this success.
+				</p>
+		  
+				<img
+				  src="./paintings/assets/Rogers3.png"
+				  class="web-img"
+				  alt="Silhouette of a woman with a paintbrush in her mouth, she sits before a small easel"
+				/>
+			  </div>
+		  
+		</div>
+	</div>
 </body>
 
 </html>

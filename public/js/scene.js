@@ -14,6 +14,9 @@ class Scene {
     this.experienceState = {
       isModalOpen: false,
       isShowingVideo: false,
+      closestPainting: null,
+      canOpenModal: false,
+      currentlyFacingWall: 'back',
     };
 
     this.startPos = {x: 11.5, y: 3, z: 40};
@@ -32,6 +35,8 @@ class Scene {
       0.1,
       5000
     );
+
+    
     this.camera.position.set(this.startPos.x, this.startPos.y, this.startPos.z);
     this.webGLScene.add(this.camera);
 
@@ -51,11 +56,10 @@ class Scene {
 
     // Add Controls
     //PAULINE:
-    this.controls = new FirstPersonControls(this.webGLScene, this.camera, this.webGLRenderer);
+    this.controls = new FirstPersonControls(this.webGLScene, this.camera, this.webGLRenderer, this.experienceState);
 
-    this.myControls = new MyControls(this.webGLScene, this.camera, this.webGLRenderer);
-
-    console.log()
+    // this.myControls = new MyControls(this.webGLScene, this.camera, this.webGLRenderer, this.experienceState);
+ 
 
     //Setup event listeners for events and handle the states
     window.addEventListener("resize", (e) => this.onWindowResize(e), false);
@@ -191,8 +195,8 @@ class Scene {
   //////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////
   // Rendering 🎥
-  update(experienceState) {
-    requestAnimationFrame((experienceState) => this.update(experienceState));
+  update() {
+    requestAnimationFrame(() => this.update());
 
     this.frameCount++;
 
@@ -207,8 +211,11 @@ class Scene {
     this.renderWebGL();
 
     //Controls:
-    this.experienceState = this.myControls.update(this.webGLScene, this.camera, this.experienceState);
-    this.controls.update(this.webGLScene, this.camera, this.experienceState );
+    // const { newScene, experienceState , newCamera} = this.myControls.update(this.webGLScene, this.camera, this.experienceState);
+    // console.log('old camera:', this.camera.rotation.y);
+    // console.log('new camera', newCamera.rotation.y);
+  
+    this.controls.update(this.webGLScene, this.camera, this.frameCount);
   }
 
   renderWebGL() {

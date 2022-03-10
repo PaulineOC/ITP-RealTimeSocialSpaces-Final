@@ -3,10 +3,17 @@
 // just add meshes to layer 3 to have them become collidable!
 
 class FirstPersonControls {
-    constructor(scene, camera, renderer) {
-        this.scene = scene
-        this.camera = camera
-        this.renderer = renderer
+    constructor(scene, camera, renderer, experienceState) {
+        this.scene = scene;
+        this.camera = camera;
+        this.renderer = renderer;
+
+        //Pauline Variables
+        this.experienceState = experienceState;
+        this.speechSynth = window.speechSynthesis;
+        this.keys = {};
+
+
 
         this.paused = false
 
@@ -29,7 +36,13 @@ class FirstPersonControls {
         this.phi = 0
         this.theta = 0;
         this.isUserInteracting = false
-        this.camera.target = new THREE.Vector3(0, 0, 0)
+        this.camera.target = new THREE.Vector3(0, 0, 0);
+
+        this.snapCamera = this.snapCamera.bind(this);
+        this.setRaycast = this.setRaycast.bind(this);
+        this.setClosestPainting = this.setClosestPainting.bind(this);
+
+        this.canInteractWithPainting  = this.canInteractWithPainting.bind(this);
 
     }
 
@@ -78,6 +91,8 @@ class FirstPersonControls {
                         this.moveRight = true
                         break;
                 }
+                this.keys[event.key] = true;
+            
             },
         )
 
@@ -106,10 +121,10 @@ class FirstPersonControls {
                         break
 
                 }
+                this.keys[event.key] = false;
             },
             false
         )
-
 
 
         this.renderer.domElement.addEventListener(
@@ -147,10 +162,229 @@ class FirstPersonControls {
         this.velocity.y = 0
     }
 
-    update(camera, scene, experience) {
-        this.detectCollisions()
-        this.updateControls(camera, scene, experience);
+    update(camera, scene, frameCount) {
+
+        this.detectCollisions();
+
+        this.myControls(frameCount);
+
+        this.updateControls(camera, scene, frameCount);
+
     }
+
+    myControls(frameCount){
+
+        if (this.keys[" "] && !this.experienceState.isModalOpen && this.experienceState.canOpenModal){
+            console.log('Pressed SPACE: Opening modal');
+
+            const workName = this.experienceState.closestPainting.object.userData.id;
+            console.log(workName);
+            openModal(workName);
+            this.experienceState.isModalOpen = true;
+        }
+
+        //Close Modal
+        if (this.keys["Escape"] && this.experienceState.isModalOpen) {
+            console.log('Pressed ESC: Closing modal ');
+            closeModal();
+            this.experienceState.isModalOpen = false;
+        }
+
+        //Navigator - N for navigator
+        if(this.keys["n"] && !this.experienceState.isModalOpen && !this.experienceState.isAlreadySpeaking){
+            this.experienceState.isAlreadySpeaking = true;
+
+            console.log('Pressed N: cueing navigation');
+
+            const distanceToBackWall = this.camera.position.z;
+            const distanceToFrontWall = 18 - this.camera.position.z;
+            const distanceToLeftWall = this.camera.position.x;
+            const distanceToRightWall = 24.5 - this.camera.position.x
+
+            const clicksToBackWall = distanceToBackWall;
+            const clicksToFrontWall = distanceToFrontWall;
+            const clicksToLeftWall = distanceToLeftWall;
+            const clicksToRightWall = distanceToRightWall;
+
+           // this.snapCamera();
+
+            //this.setClosestPainting();
+
+            const closestPainting = this.experienceState.closestPainting;
+
+
+            // this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+
+            console.log(this.experienceState.closestPainting);
+
+            // const txt = null;
+            // if(this.experienceState.canOpenModal){
+            //     const canOpenText = `You are now close enough to interact with ${} work. Please press SPACE to learn more`;
+            // }
+        
+            // const text = `You are now facing the The closest painting `;
+
+            this.speak('Hi');
+        }
+
+        if(frameCount % 25 === 0){
+            //Raycast for paintings
+
+            this.setClosestPainting();
+
+           // this.setRaycast();
+
+        }
+
+    }
+
+
+    //PAULINE:
+    snapCamera(){
+
+        const currRotation = this.camera.rotation;
+        //Preserve camera level
+        this.camera.rotation.x = 0;
+        this.camera.rotation.z = 0;
+
+        
+        if(currRotation.y < Math.PI/4 &&  currRotation.y > -Math.PI/4){
+            this.camera.rotation.y = 0;
+            console.log('Snapping to back wall');
+            this.experienceState.currentlyFacingWall = 'back';
+        }
+        
+        if(currRotation.y < 3*Math.PI/4 &&  currRotation.y > Math.PI/4){
+            console.log('Snapping to left wall');
+            this.camera.rotation.y = Math.PI/2;
+            this.experienceState.currentlyFacingWall = 'left';
+        }
+
+        if(currRotation.y < -Math.PI/4 &&  currRotation.y > -3*Math.PI/4){
+            this.camera.rotation.y = -Math.PI/2;
+            this.experienceState.currentlyFacingWall = 'right';
+        }
+
+        if(currRotation.y < -3*Math.PI/4 ||  currRotation.y > 3*Math.PI/4){
+            this.camera.rotation.y = Math.PI;
+            this.experienceState.currentlyFacingWall = 'front';
+        }
+
+        // TODO: Relculate long/lat
+        // this.lon = (this.onPointerDownPointerX - event.clientX) * -0.3 + this.onPointerDownLon;
+        // this.lat = (event.clientY - this.onPointerDownPointerY) * -0.3 + this.onPointerDownLat;
+
+        this.computeCameraOrientation();
+    }
+
+    setClosestPainting(){
+
+        const raycast = new THREE.Raycaster();
+
+        var matrix = new THREE.Matrix4()
+        matrix.extractRotation(this.camera.matrix);
+        var backwardDir = new THREE.Vector3(0, 0, 1).applyMatrix4(matrix);
+        var forwardDir = backwardDir.clone().negate();
+
+        const allPaintings = [];
+
+        raycast.set(this.camera.position, forwardDir);
+        const allIntersections = raycast.intersectObjects(this.scene.children);
+        allIntersections.forEach((item)=>{
+            if(item.object.userData.type === 'painting'){
+                allPaintings.push(item);
+            }
+        });
+
+        this.experienceState.closestPainting = allPaintings[0] ?? null;
+        this.experienceState.canOpenModal = this.canInteractWithPainting(this.experienceState.closestPainting);
+
+    }
+
+    canInteractWithPainting(painting){
+        if(painting === null || undefined) return false;
+        const { distance } = painting;
+
+        if(distance <= 8.5){
+
+            const title = painting.object.userData.id;
+            if(!this.experienceState.canOpenModal && !this.experienceState.isModalOpen){
+                this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+            }
+            //Trigger speaking
+            return true;
+        }
+        return false;
+    }
+
+
+    setRaycast(){
+
+        const raycast = new THREE.Raycaster();
+
+        var matrix = new THREE.Matrix4()
+        matrix.extractRotation(this.camera.matrix);
+        var backwardDir = new THREE.Vector3(0, 0, 1).applyMatrix4(matrix);
+        var forwardDir = backwardDir.clone().negate();
+        var rightDir = forwardDir.clone().cross(new THREE.Vector3(0, 1, 0)).normalize();
+        var leftDir = rightDir.clone().negate();
+
+        const allDirs = [ backwardDir, forwardDir, rightDir, leftDir];
+
+        const allInteriorWalls = [];
+        const allPaintings = [];
+
+        for(let i = 0; i < allDirs.length; i++){
+            raycast.set(this.camera.position, allDirs[i]);
+            const allIntersections = raycast.intersectObjects(this.scene.children);
+            allIntersections.forEach((item)=>{
+                if(item.object.userData.type === 'interior-wall'){
+                    allInteriorWalls.push(item);
+                }
+                if(item.object.userData.type === 'painting'){
+                    allPaintings.push(item);
+                }
+            });
+        }
+
+        let closestPainting = null;
+        if(allPaintings.length === 1){
+            allPaintings[0];
+        }
+
+        if(allPaintings.length > 1){
+            closestPainting = allPaintings.sort((eleA, eleB)=>{
+                return eleA.distance - eleB.distance;
+            })[0];
+        }
+
+        this.experienceState.closestPainting = closestPainting;
+
+    }
+
+    speak (text) {
+
+        if (this.speechSynth.isSpeaking) {
+            this.experienceState.isAlreadySpeaking = true;
+            console.error("Already speaking");
+            return;
+        }
+        let utterThis = new SpeechSynthesisUtterance(text);
+        // https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
+        
+        // utterThis.lang = "de-de";
+        // utterThis.pitch = 1.2;
+        // utterThis.rate = 0.2;
+        this.speechSynth.speak(utterThis);
+
+        utterThis.onend = () => {
+            console.log('Done speaking');
+            this.experienceState.isAlreadySpeaking = false;;
+        }
+
+    }
+
+    // Original code
 
     getCollidables() {
         let collidableMeshList = []
@@ -164,13 +398,14 @@ class FirstPersonControls {
 
     // update for these controls, which are unfortunately not included in the controls directly...
     // see: https://github.com/mrdoob/three.js/issues/5566
-    updateControls(camera, scene, experienceState) {
+    updateControls(camera, scene, frameCount) {
+
+        let speed = 100;
         
-       //PAULINE: Don't move if the modal is open
-        if(experienceState && experienceState.isModalOpen){
-            return;
+        //PAULINE: Don't move if the modal is open
+        if(this.experienceState && this.experienceState.isModalOpen){
+            speed = 0;
         }
-        let speed = 100
 
         var time = performance.now()
         var rawDelta = (time - this.prevTime) / 1000
@@ -246,8 +481,10 @@ class FirstPersonControls {
             this.canJump = true
         }
 
-        this.prevTime = time
+        this.prevTime = time;
     }
+
+
 
     getCameraForwardDirAlongXZPlane() {
         let forwardDir = new THREE.Vector3(0, 0, -1)
@@ -333,6 +570,8 @@ class FirstPersonControls {
         this.obstacles.backward = this.checkCollisions(this.backwardCollisionDetectionPoints, backwardDir)
         this.obstacles.left = this.checkCollisions(this.leftCollisionDetectionPoints, leftDir)
         this.obstacles.right = this.checkCollisions(this.rightCollisionDetectionPoints, rightDir)
+
+        
     }
 
     checkCollisions(pts, dir) {
@@ -382,4 +621,16 @@ class FirstPersonControls {
         this.camera.target.z = 500 * Math.sin(this.phi) * Math.sin(this.theta)
         this.camera.lookAt(this.camera.target)
     }
+}//end of class
+
+const openModal = (title) => {
+    document.getElementById(title).classList.remove('hidden');
+    document.getElementById('modal-background').classList.remove('hidden');
+};
+
+const closeModal = () => {
+    document.getElementById('honeywell').classList.add('hidden');
+    document.getElementById('nellis').classList.add('hidden');
+    document.getElementById('rogers').classList.add('hidden');
+    document.getElementById('modal-background').classList.add('hidden');
 }
