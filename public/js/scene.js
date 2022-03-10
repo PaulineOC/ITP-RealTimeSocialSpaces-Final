@@ -19,7 +19,7 @@ class Scene {
       currentlyFacingWall: 'back',
     };
 
-    this.startPos = {x: 11.5, y: 3, z: 40};
+    this.startPos = {x: 11.5, y: 3, z: 25};
 
     //Utility
     this.width = window.innerWidth;
@@ -60,13 +60,14 @@ class Scene {
 
     // this.myControls = new MyControls(this.webGLScene, this.camera, this.webGLRenderer, this.experienceState);
  
-
     //Setup event listeners for events and handle the states
     window.addEventListener("resize", (e) => this.onWindowResize(e), false);
 
     // Helpers
-    this.webGLScene.add(new THREE.GridHelper(500, 500));
-    this.webGLScene.add(new THREE.AxesHelper(10));
+
+    //PAULINE
+   // this.webGLScene.add(new THREE.GridHelper(500, 500));
+   // this.webGLScene.add(new THREE.AxesHelper(10));
 
     this.addLights();
     createEnvironment(this.webGLScene);
@@ -83,9 +84,9 @@ class Scene {
   addLights() {
     this.webGLScene.add(new THREE.AmbientLight(0xffffe6, 0.7));
 
-    const pointlight = new THREE.PointLight(0xaaaaaa);
-    pointlight.position.set(0,0,0);
-    this.webGLScene.add(pointlight);
+    // const pointlight = new THREE.PointLight(0xaaaaaa);
+    // pointlight.position.set(0,0,0);
+    //this.webGLScene.add(pointlight);
 
   }
 

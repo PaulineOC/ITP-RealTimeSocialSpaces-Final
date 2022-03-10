@@ -206,7 +206,7 @@ class FirstPersonControls {
             const clicksToLeftWall = distanceToLeftWall;
             const clicksToRightWall = distanceToRightWall;
 
-           // this.snapCamera();
+            this.snapCamera();
 
             //this.setClosestPainting();
 
@@ -241,13 +241,13 @@ class FirstPersonControls {
 
     //PAULINE:
     snapCamera(){
-
+        console.log("Snapping Camera");
         const currRotation = this.camera.rotation;
         //Preserve camera level
         this.camera.rotation.x = 0;
         this.camera.rotation.z = 0;
 
-        
+    
         if(currRotation.y < Math.PI/4 &&  currRotation.y > -Math.PI/4){
             this.camera.rotation.y = 0;
             console.log('Snapping to back wall');
@@ -261,11 +261,13 @@ class FirstPersonControls {
         }
 
         if(currRotation.y < -Math.PI/4 &&  currRotation.y > -3*Math.PI/4){
+            console.log('Snapping to right wall');
             this.camera.rotation.y = -Math.PI/2;
             this.experienceState.currentlyFacingWall = 'right';
         }
 
         if(currRotation.y < -3*Math.PI/4 ||  currRotation.y > 3*Math.PI/4){
+            console.log('Snapping to front wall');
             this.camera.rotation.y = Math.PI;
             this.experienceState.currentlyFacingWall = 'front';
         }
@@ -274,7 +276,7 @@ class FirstPersonControls {
         // this.lon = (this.onPointerDownPointerX - event.clientX) * -0.3 + this.onPointerDownLon;
         // this.lat = (event.clientY - this.onPointerDownPointerY) * -0.3 + this.onPointerDownLat;
 
-        this.computeCameraOrientation();
+       // this.computeCameraOrientation();
     }
 
     setClosestPainting(){

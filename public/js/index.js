@@ -252,7 +252,15 @@ function createLocalVideoElement() {
 
     videoElement.srcObject = videoStream;
   }
-  document.body.appendChild(videoElement);
+
+  const container = document.getElementById('faces-container');
+
+  const row = document.createElement('div');
+  row.classList.add('face-row');
+  row.appendChild(videoElement);
+  container.appendChild(row);
+
+  
 }
 
 // created <video> element using client ID
@@ -264,14 +272,19 @@ function createClientMediaElements(_id) {
   videoElement.autoplay = true;
   // videoElement.style = "visibility: hidden;";
 
-  document.body.appendChild(videoElement);
+  const container = document.getElementById('faces-container');
+
+  const row = document.createElement('div');
+  row.classList.add('face-row');
+  row.appendChild(videoElement);
+
 
   // create audio element for client
   let audioEl = document.createElement("audio");
   audioEl.setAttribute("id", _id + "_audio");
   audioEl.controls = "controls";
   audioEl.volume = 1;
-  document.body.appendChild(audioEl);
+  row.appendChild(audioEl);
 
   audioEl.addEventListener("loadeddata", () => {
     audioEl.play();

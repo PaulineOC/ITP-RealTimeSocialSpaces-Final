@@ -23,48 +23,21 @@
 	<script src="js/environment.js"></script>
 	<script src="js/scene.js"></script>
 	<script src="js/index.js"></script>
-
-	<style>
-		body {
-			overflow: hidden;
-		}
-
-		#info {
-			padding: 1em;
-			border: 1em;
-			color: rgb(223, 223, 223);
-		}
-
-		#modal-content {
-            font-family: sans-serif;
-            margin: 4vw;
-            background-color: #ebe5d0;
-            font-size: 1.8vw;
-            line-height: 1.5;
-			overflow-y: scroll;
-        }
-        .modal-img {
-            position: relative;
-            width: 60%;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 3vw;
-            margin-bottom: 3vw;
-            height: auto;
-            max-width: 100%;
-        }
-	</style>
 </head>
 
-<body style="background: yellow; margin: 0; padding: 0">
+<body>
 
-	<div id="intro" class="hidden web-body">
+	<div id="intro" class="intro-body">
 		<h1 id="Title">"Mouth & Toes" Virtual Exibition Space</h1>
   
 		<h2>
 		  <i>Created by Pauline Ceraulo and Kseniia Balaenkova</i>
 		</h2>
+		<img
+			class="web-img"
+			src="./paintings/assets/intro.png"
+			alt="Silhouette of a woman with scissors in her mouth"
+		/>
   
 		<p>
 		  <i>Based on the book "Mouth & Toes: The World of 19th-Century Silhouette Artists with Disabilities by Laurel Daen and Marianne R. Petit. All rights reserved by the authors. Do not copy, print, or distribute the content without prior written permission.</i>
@@ -74,16 +47,40 @@
 		<p>
 		  This virtual exibition space that you are about to enter tells the stories of three artists—Martha Ann Honeywell, Sarah Rogers, and Saunders Ken Grems Nellis—who worked at the intersection of visual art, performance, and disability in the early to mid-nineteenth century. Born with significant physical disabilities, these artists traveled throughout North and South America, the Caribbean, and Europe creating and selling silhouettes and performing their unexpected capacities and incapacities for customers. Although rarely remembered today, these artists’ lives and works testify to the power of disability as a source of creative inspiration and profit. Capitalizing on the prejudices and curiosities of their patrons, Honeywell, Rogers, and Nellis made art, traveled the world, and sustained distinguished careers.
 		</p>
-  
-		<img
-			class="web-img"
-			src="./paintings/assets/intro.png"
-			alt="Silhouette of a woman with scissors in her mouth"
-		/>
+
+
+		<div id="buttonContainer">
+			<button id="startButton">Start</button>
+		</div>
+
 	</div>
 
-	<div id="canvas-container"></div>
+	<div id="canvas-container" class="hidden "></div>
 
+	<div id="HUD" class="hidden">
+		<div id="instructions-container">
+			<h3>Keyboard shortcuts:</h3>
+			<ul>
+				<li>
+					WASD or Arrow Keys: Walk around
+				</li>
+				<li>
+					N: Cue audio navigator
+				</li>
+
+				<li>
+					Space Bar: Interact with art (when nearby)
+				</li>
+
+				<li>
+					ESC = Close more information with art
+				</li>
+			</ul>
+		</div>
+		<div id="faces-container">
+			<h3>Visitors:</h3>
+		</div>
+	</div>
 
 	<div id="modal-background" class="modalBackground hidden">
 		<div id="modal-content" class="modalContent">
@@ -292,6 +289,20 @@
 		  
 		</div>
 	</div>
+
+	<script>
+		document.getElementById('startButton').onclick = () => {
+		console.log("Starting");
+		document.getElementById('intro').classList.add('hidden');
+		const canvas = document.getElementById('canvas-container');
+		const HUD = document.getElementById('HUD');
+		HUD.classList.remove("hidden");
+		canvas.classList.remove('hidden');
+		};
+	</script>
+
+
+
 </body>
 
 </html>

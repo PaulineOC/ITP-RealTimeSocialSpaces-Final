@@ -117,7 +117,7 @@ function createEnvironment(scene) {
 
   const exteriorWallMaterial = new THREE.MeshPhongMaterial({ map: exteriorWallTexture });
 
-  const interiorWallMaterial = new THREE.MeshPhongMaterial( { color: 0xeae3c9 } );
+  const interiorWallMaterial = new THREE.MeshPhongMaterial( { color: 0xebe5d0 } );
   exteriorWallMaterial.side = THREE.DoubleSide;
   interiorWallMaterial.side = THREE.DoubleSide;
   
@@ -298,8 +298,8 @@ function createSideWalls(exteriorMaterial, interiorMaterial){
 
   const interiorWallGeometry = new THREE.ExtrudeBufferGeometry(interiorWallShape, wallSettings.wallExtrudeSettings);
   const exteriorWallGeometry = new THREE.ExtrudeBufferGeometry(exteriorWallShape, wallSettings.wallExtrudeSettings);
-
-  const leftSideWallInteriorMesh = new THREE.Mesh(interiorWallGeometry, new THREE.MeshPhongMaterial( { color: 0x00ff00 } ));
+  
+  const leftSideWallInteriorMesh = new THREE.Mesh(interiorWallGeometry, new THREE.MeshPhongMaterial( { color: 0xebe5d0 } ));
   const leftSideWallExteriorMesh = new THREE.Mesh(exteriorWallGeometry, exteriorMaterial);
   leftSideWallInteriorMesh.userData.id = 'leftSideWallInterior';
   leftSideWallInteriorMesh.userData.type = 'interior-wall';
