@@ -196,44 +196,44 @@ class FirstPersonControls {
 
             console.log('Pressed N: cueing navigation');
 
-            const distanceToBackWall = this.camera.position.z;
-            const distanceToFrontWall = 18 - this.camera.position.z;
-            const distanceToLeftWall = this.camera.position.x;
-            const distanceToRightWall = 24.5 - this.camera.position.x
-
-            const clicksToBackWall = distanceToBackWall;
-            const clicksToFrontWall = distanceToFrontWall;
-            const clicksToLeftWall = distanceToLeftWall;
-            const clicksToRightWall = distanceToRightWall;
-
             this.snapCamera();
 
-            //this.setClosestPainting();
+            this.setClosestPainting();
+            const { distance, object} = this.experienceState.closestPainting;
 
-            const closestPainting = this.experienceState.closestPainting;
+            // const distanceToBackWall = this.camera.position.z;
+            // const distanceToFrontWall = 18 - this.camera.position.z;
+            // const distanceToLeftWall = this.camera.position.x;
+            // const distanceToRightWall = 24.5 - this.camera.position.x
 
 
-            // this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+            const { canOpenModal, closestPainting, currentlyFacingWall }  = this.experienceState;
 
-            console.log(this.experienceState.closestPainting);
+            if(canOpenModal){
+                const title = object.userData.id
+                this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+            }
+            else{
 
-            // const txt = null;
-            // if(this.experienceState.canOpenModal){
-            //     const canOpenText = `You are now close enough to interact with ${} work. Please press SPACE to learn more`;
-            // }
-        
-            // const text = `You are now facing the The closest painting `;
+                const artToWallText = {
+                    back: 'the honeywell work',
+                    left: 'the nellis work',
+                    right: 'the rogers work',
+                    front: 'the doorway'
+                };
+                const clickDistance = 1.75;
+                let dist = Math.ceil(distance/clickDistance);
+                
+                const text = `You are currently facing the ${currentlyFacingWall} wall with ${artToWallText[currentlyFacingWall]}.
+                It is about ${dist} forward clicks away`;
+                this.speak(text);
+            }
 
-            this.speak('Hi');
         }
 
         if(frameCount % 25 === 0){
             //Raycast for paintings
-
             this.setClosestPainting();
-
-           // this.setRaycast();
-
         }
 
     }
@@ -297,10 +297,8 @@ class FirstPersonControls {
                 allPaintings.push(item);
             }
         });
-
         this.experienceState.closestPainting = allPaintings[0] ?? null;
         this.experienceState.canOpenModal = this.canInteractWithPainting(this.experienceState.closestPainting);
-
     }
 
     canInteractWithPainting(painting){

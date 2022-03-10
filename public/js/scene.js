@@ -14,9 +14,9 @@ class Scene {
     this.experienceState = {
       isModalOpen: false,
       isShowingVideo: false,
+      currentlyFacingWall: 'back',
       closestPainting: null,
       canOpenModal: false,
-      currentlyFacingWall: 'back',
     };
 
     this.startPos = {x: 11.5, y: 3, z: 25};
