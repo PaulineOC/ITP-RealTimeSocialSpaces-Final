@@ -203,40 +203,38 @@ class FirstPersonControls {
 
             this.setClosestPainting();
 
-            if(!this.experienceState.closestPainting){
-                return;
+            if(this.experienceState.closestPainting){
+
+                const { distance, object} = this.experienceState.closestPainting;
+
+                const { canOpenModal, currentlyFacingWall }  = this.experienceState;
+
+                if(canOpenModal){
+                    const title = object.userData.id;   
+                    console.log(this.artDesc[title]);
+                    this.speak(`You are close to ${this.artDesc[title]}. Press SPACE to learn more.`);
+                }
+                else{
+                    console.log("Some distance away");
+
+                    const artToWallText = {
+                        back: 'the work by Martha Ann Honeywell',
+                        left: 'the work by Saunders Ken Grems Nellis',
+                        right: 'the work by Sally Rogers',
+                        front: 'the doorway'
+                    };
+                    const clickDistance = 1.75;
+                    let dist = Math.ceil(distance/clickDistance);
+                    
+                    const text = `You are currently facing the ${currentlyFacingWall} wall with ${artToWallText[currentlyFacingWall]}.
+                    It is about ${dist} forward clicks away`;
+                    this.speak(text);
+                }
+
+                
             }
             
-            const { distance, object} = this.experienceState.closestPainting;
 
-            // const distanceToBackWall = this.camera.position.z;
-            // const distanceToFrontWall = 18 - this.camera.position.z;
-            // const distanceToLeftWall = this.camera.position.x;
-            // const distanceToRightWall = 24.5 - this.camera.position.x
-
-
-            const { canOpenModal, currentlyFacingWall }  = this.experienceState;
-
-            if(canOpenModal){
-                const title = object.userData.id;   
-                console.log(this.artDesc[title]);
-                this.speak(`You are close to ${this.artDesc[title]}. Press SPACE to learn more.`);
-            }
-            else{
-
-                const artToWallText = {
-                    back: 'the work by Honeywell',
-                    left: 'the work Nellis',
-                    right: 'the work by Rogers',
-                    front: 'the doorway'
-                };
-                const clickDistance = 1.75;
-                let dist = Math.ceil(distance/clickDistance);
-                
-                const text = `You are currently facing the ${currentlyFacingWall} wall with ${artToWallText[currentlyFacingWall]}.
-                It is about ${dist} forward clicks away`;
-                this.speak(text);
-            }
 
         }
 
