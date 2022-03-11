@@ -12,8 +12,11 @@ class FirstPersonControls {
         this.experienceState = experienceState;
         this.speechSynth = window.speechSynthesis;
         this.keys = {};
-
-
+        this.artDesc = {
+            honeywell: 'Silhouettes Art by Martha Ann Honeywell',
+            nellis: 'Cut Paper Picture by Saunders Ken Grems Nellis.',
+            rogers:  'Watercolor art by Sally Rogers',
+        };
 
         this.paused = false
 
@@ -199,6 +202,11 @@ class FirstPersonControls {
             this.snapCamera();
 
             this.setClosestPainting();
+
+            if(!this.experienceState.closestPainting){
+                return;
+            }
+            
             const { distance, object} = this.experienceState.closestPainting;
 
             // const distanceToBackWall = this.camera.position.z;
@@ -207,18 +215,19 @@ class FirstPersonControls {
             // const distanceToRightWall = 24.5 - this.camera.position.x
 
 
-            const { canOpenModal, closestPainting, currentlyFacingWall }  = this.experienceState;
+            const { canOpenModal, currentlyFacingWall }  = this.experienceState;
 
             if(canOpenModal){
-                const title = object.userData.id
-                this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+                const title = object.userData.id;   
+                console.log(this.artDesc[title]);
+                this.speak(`You are close to ${this.artDesc[title]}. Press SPACE to learn more.`);
             }
             else{
 
                 const artToWallText = {
-                    back: 'the honeywell work',
-                    left: 'the nellis work',
-                    right: 'the rogers work',
+                    back: 'the work by Honeywell',
+                    left: 'the work Nellis',
+                    right: 'the work by Rogers',
                     front: 'the doorway'
                 };
                 const clickDistance = 1.75;
@@ -309,7 +318,9 @@ class FirstPersonControls {
 
             const title = painting.object.userData.id;
             if(!this.experienceState.canOpenModal && !this.experienceState.isModalOpen){
-                this.speak(`You are close enough to interact with the ${title} work. Press SPACE to learn more.`);
+                console.log(this.artDesc[title]);
+
+                this.speak(`You are close to ${this.artDesc[title]}. Press SPACE to learn more.`);
             }
             //Trigger speaking
             return true;
